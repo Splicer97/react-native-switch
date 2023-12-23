@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 
 import { StyleSheet, View } from 'react-native';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
-import Switch from 'react-native-switch';
+import Switch from '@splicer97/react-native-switch';
 
 export default function App() {
   const [state, setState] = useState(false);

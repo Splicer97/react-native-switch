@@ -24,16 +24,15 @@ yarn add @splicer97/react-native-switch
 import Switch from '@splicer97/react-native-switch';
 
 // ...
-  const [state, setState] = useState(false);
+const [state, setState] = useState(false);
 
-  return (
-    <GestureHandlerRootView style={{ flex: 1 }}>
-      <View style={styles.container}>
-        <Switch value={state} onValueChange={setState} />
-      </View>
-    </GestureHandlerRootView>
-  );
-/>;
+return (
+  <GestureHandlerRootView style={{ flex: 1 }}>
+    <View style={styles.container}>
+      <Switch value={state} onValueChange={setState} />
+    </View>
+  </GestureHandlerRootView>
+);
 ```
 
 ## Props
