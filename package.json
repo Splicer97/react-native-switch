@@ -1,7 +1,7 @@
 {
-  "name": "react-native-switch",
+  "name": "@splicer97/react-native-switch",
   "version": "0.1.0",
-  "description": "123",
+  "description": "Custom Switch component for React Native that use Reanimated and Gesture Handler",
   "main": "lib/commonjs/index",
   "module": "lib/module/index",
   "types": "lib/typescript/src/index.d.ts",
@@ -37,7 +37,15 @@
   "keywords": [
     "react-native",
     "ios",
-    "android"
+    "android",
+    "switch",
+    "switcher",
+    "toggle",
+    "react-native-switch",
+    "react-native-reanimated",
+    "react-native-gesture-handler",
+    "reanimated",
+    "gesture-handler"
   ],
   "repository": {
     "type": "git",
