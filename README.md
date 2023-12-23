@@ -1,4 +1,4 @@
-# react-native-switch [![npm version](https://img.shields.io/npm/v/@splicer97/react-native-osmdroid.svg?style=flat)](https://www.npmjs.com/package/@splicer97/react-native-osmdroid) [![Downloads](https://img.shields.io/npm/dm/@splicer97/react-native-osmdroid.svg)](http://www.npmtrends.com/@splicer97/react-native-osmdroid)
+# react-native-switch [![npm version](https://img.shields.io/npm/v/@splicer97/react-native-switch.svg?style=flat)](https://www.npmjs.com/package/@splicer97/react-native-switch) [![Downloads](https://img.shields.io/npm/dm/@splicer97/react-native-switch.svg)](http://www.npmtrends.com/@splicer97/react-native-switch)
 
 Custom Switch component for React Native that use Reanimated and Gesture Handler
 
