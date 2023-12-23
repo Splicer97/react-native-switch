@@ -1,22 +1,48 @@
-# react-native-switch
+# react-native-switch [![npm version](https://img.shields.io/npm/v/@splicer97/react-native-osmdroid.svg?style=flat)](https://www.npmjs.com/package/@splicer97/react-native-osmdroid) [![Downloads](https://img.shields.io/npm/dm/@splicer97/react-native-osmdroid.svg)](http://www.npmtrends.com/@splicer97/react-native-osmdroid)
 
-123
+Custom Switch component for React Native that use Reanimated and Gesture Handler
 
 ## Installation
 
+First, you need to install and configure the [Reanimated](https://docs.swmansion.com/react-native-reanimated/) and [Gesture Handler](https://docs.swmansion.com/react-native-gesture-handler/) libraries
+
+Then install library
+
 ```sh
-npm install react-native-switch
+npm install @splicer97/react-native-switch
+```
+
+or
+
+```sh
+yarn add @splicer97/react-native-switch
 ```
 
 ## Usage
 
 ```js
-import { multiply } from 'react-native-switch';
+import Switch from '@splicer97/react-native-switch';
 
 // ...
+  const [state, setState] = useState(false);
 
-const result = await multiply(3, 7);
+  return (
+    <GestureHandlerRootView style={{ flex: 1 }}>
+      <View style={styles.container}>
+        <Switch value={state} onValueChange={setState} />
+      </View>
+    </GestureHandlerRootView>
+  );
+/>;
 ```
+
+## Props
+
+| Props           | Type                       | Required | Description                     |
+| --------------- | -------------------------- | -------- | ------------------------------- |
+| `value`         | `boolean`                  | `true`   | Current state of the component  |
+| `onValueChange` | `(value: boolean) => void` | `true`   | Change of component state       |
+| `disabled`      | `boolean`                  | `false`  | Inactive state of the component |
 
 ## Contributing
 
