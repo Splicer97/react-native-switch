@@ -1,16 +1,22 @@
 import React, { useState } from 'react';
 
-import { StyleSheet, View } from 'react-native';
+import { Button, StyleSheet, View } from 'react-native';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import Switch from '@splicer97/react-native-switch';
 
 export default function App() {
-  const [state, setState] = useState(false);
+  const [value, onValueChange] = useState(false);
+  const [disabled, setDisabled] = useState(false);
 
   return (
     <GestureHandlerRootView style={{ flex: 1 }}>
       <View style={styles.container}>
-        <Switch value={state} onValueChange={setState} />
+        <Switch
+          value={value}
+          onValueChange={onValueChange}
+          disabled={disabled}
+        />
+        <Button title="switch disable" onPress={() => setDisabled(!disabled)} />
       </View>
     </GestureHandlerRootView>
   );

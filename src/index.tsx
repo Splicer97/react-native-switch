@@ -1,5 +1,5 @@
 import React, { type FC, useEffect } from 'react';
-import { StyleSheet } from 'react-native';
+import { StyleSheet, type StyleProp, type ViewStyle } from 'react-native';
 import { Gesture, GestureDetector } from 'react-native-gesture-handler';
 import Animated, {
   interpolateColor,
@@ -22,8 +22,57 @@ export type SwitchProps = {
    * Inactive state of the component
    */
   disabled?: boolean;
+  /**
+   * Container color when component is active
+   * @default 'darkblue'
+   */
+  activeColor?: string;
+  /**
+   * Container color when component is inactive
+   * @default 'darkgray'
+   */
+  inactiveColor?: string;
+  /**
+   * Container color when component is active and disabled
+   * @default 'blue'
+   */
+  disabledActiveColor?: string;
+  /**
+   * Container color when component is inactive and disabled
+   * @default 'gray'
+   */
+  disabledInactiveColor?: string;
+  /**
+   * Should a swipe handler be end if your finger is outside the component
+   * @default false
+   */
+  shouldCancelWhenOutside?: boolean;
+  /**
+   * Switch container style
+   */
+  containerStyle?: StyleProp<ViewStyle>;
+  /**
+   * Switch circle style
+   */
+  circleStyle?: StyleProp<ViewStyle>;
+  /**
+   * The width that the circle will be able to move
+   * @default 'containerWidth - circleWidth - containerPaddingHorizontal * 2'
+   */
+  trackWidth?: number;
 };
-const Switch: FC<SwitchProps> = ({ value, onValueChange, disabled }) => {
+const Switch: FC<SwitchProps> = ({
+  value,
+  onValueChange,
+  disabled,
+  activeColor = 'darkblue',
+  inactiveColor = 'darkgray',
+  disabledActiveColor = 'blue',
+  disabledInactiveColor = 'gray',
+  shouldCancelWhenOutside = false,
+  containerStyle,
+  circleStyle,
+}) => {
   const styles = StyleSheet.create({
     container: {
       width: 52,
@@ -39,10 +88,22 @@ const Switch: FC<SwitchProps> = ({ value, onValueChange, disabled }) => {
       borderRadius: 12,
     },
   });
+  const currentContainerStyle = StyleSheet.compose(
+    styles.container,
+    containerStyle
+  );
+  const currentCircleStyle = StyleSheet.compose(styles.circle, circleStyle);
+
+  const containerWidth =
+    (containerStyle as { width: number })?.width || styles.container.width;
+  const circleWidth =
+    (circleStyle as { width: number })?.width || styles.circle.width;
+  const containerPaddingHorizontal =
+    (containerStyle as { paddingHorizontal: number })?.paddingHorizontal ||
+    styles.container.paddingHorizontal;
+
   const TRACK_CIRCLE_WIDTH =
-    styles.container.width -
-    styles.circle.width -
-    styles.container.paddingHorizontal * 2;
+    containerWidth - circleWidth - containerPaddingHorizontal * 2;
 
   const translateX = useSharedValue(value ? TRACK_CIRCLE_WIDTH : 0);
   const animatedStyle = useAnimatedStyle(() => {
@@ -51,7 +112,9 @@ const Switch: FC<SwitchProps> = ({ value, onValueChange, disabled }) => {
     };
   });
   const animatedContainerStyle = useAnimatedStyle(() => {
-    const colors = disabled ? ['gray', 'blue'] : ['darkgray', 'darkblue'];
+    const colors = disabled
+      ? [disabledInactiveColor, disabledActiveColor]
+      : [inactiveColor, activeColor];
     return {
       backgroundColor: interpolateColor(
         translateX.value,
@@ -68,11 +131,9 @@ const Switch: FC<SwitchProps> = ({ value, onValueChange, disabled }) => {
     .enabled(!disabled);
   const pan = Gesture.Pan()
     .onUpdate(({ translationX }) => {
-      //если значение value false, то компонент circle первоначально находится на нуле в крайнем левом положении, если true то circle находится в крайнем правом положении и отчет нужно вести от него
       const translate = value
         ? TRACK_CIRCLE_WIDTH + translationX
         : translationX;
-      //чтобы круг не уходил за границы трека, необходимо задать ему ограничение на перемещения
       const currentTranslate = () => {
         if (translate < 0) {
           return 0;
@@ -88,27 +149,25 @@ const Switch: FC<SwitchProps> = ({ value, onValueChange, disabled }) => {
       const translate = value
         ? TRACK_CIRCLE_WIDTH + translationX
         : translationX;
-      //проверяем, в каком положении остановился компонент circle и задаем ему одно из конечных положений
       const selectedSnapPoint =
         translate > TRACK_CIRCLE_WIDTH / 2 ? TRACK_CIRCLE_WIDTH : 0;
       translateX.value = withTiming(selectedSnapPoint, { duration: 100 });
       runOnJS(onValueChange)(!!selectedSnapPoint);
     })
     .enabled(!disabled)
-    .shouldCancelWhenOutside(true);
+    .shouldCancelWhenOutside(shouldCancelWhenOutside);
 
   useEffect(() => {
     const currentCircle = !value ? 0 : TRACK_CIRCLE_WIDTH;
     if (!!currentCircle !== !!translateX.value) {
       translateX.value = withTiming(currentCircle);
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [value]);
+  }, [TRACK_CIRCLE_WIDTH, translateX, value]);
   const gesture = Gesture.Race(tap, pan);
   return (
     <GestureDetector gesture={gesture}>
-      <Animated.View style={[animatedContainerStyle, styles.container]}>
-        <Animated.View style={[animatedStyle, styles.circle]} />
+      <Animated.View style={[animatedContainerStyle, currentContainerStyle]}>
+        <Animated.View style={[animatedStyle, currentCircleStyle]} />
       </Animated.View>
     </GestureDetector>
   );
