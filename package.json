@@ -1,6 +1,6 @@
 {
   "name": "@splicer97/react-native-switch",
-  "version": "0.1.0",
+  "version": "1.0.0",
   "description": "Custom Switch component for React Native that use Reanimated and Gesture Handler",
   "main": "lib/commonjs/index",
   "module": "lib/module/index",
